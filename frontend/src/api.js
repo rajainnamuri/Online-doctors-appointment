@@ -100,8 +100,28 @@ export const checkUser = (userId) => {
 
 
 // Search functionality
+// export const searchDoctors = (searchTerm) => {
+//   console.log('Searching for doctor:', searchTerm);
+//   return axios.get(`${API_BASE_URL}/doctors/search/${encodeURIComponent(searchTerm)}`)
+//     .then(response => {
+//       console.log('Search response:', response.data);
+//       return response.data;
+//     })
+//     .catch(error => {
+//       console.error('Error in searchDoctors:', error);
+//       if (error.response) {
+//         console.error('Error response:', error.response.data);
+//         console.error('Error status:', error.response.status);
+//       } else if (error.request) {
+//         console.error('Error request:', error.request);
+//       } else {
+//         console.error('Error message:', error.message);
+//       }
+//       throw error;
+//     });
+// };
 export const searchDoctors = (searchTerm) => {
-  console.log('Searching for doctor:', searchTerm);
+  console.log('Searching for doctor by specialization:', searchTerm);
   return axios.get(`${API_BASE_URL}/doctors/search/${encodeURIComponent(searchTerm)}`)
     .then(response => {
       console.log('Search response:', response.data);

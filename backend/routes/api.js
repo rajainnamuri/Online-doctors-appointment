@@ -540,21 +540,26 @@ router.get('/doctors/search/:term', async (req, res) => {
 
     console.log('Executing database query');
     const doctors = await database.collection('docData').find({
-      name: { $regex: new RegExp(term, 'i') }
+      $or: [
+        { specialization: { $regex: new RegExp(term, 'i') } },
+        { 'specialization.name': { $regex: new RegExp(term, 'i') } },
+        { 'specialization.value': { $regex: new RegExp(term, 'i') } }
+      ]
     }).toArray();
 
     console.log('Doctors found:', doctors);
 
     if (doctors.length === 0) {
       console.log('No doctors found');
-      return res.status(404).json({ message: 'No doctor found with that name' });
+      return res.status(404).json({ message: 'No doctor found with that specialization' });
     }
 
     const sanitizedDoctors = doctors.map(doctor => {
       const { password, ...sanitizedDoctor } = doctor;
       return {
         ...sanitizedDoctor,
-        _id: sanitizedDoctor._id.toString() // Convert ObjectId to string
+        _id: sanitizedDoctor._id.toString(), // Convert ObjectId to string
+        specialization: sanitizedDoctor.specialization.name || sanitizedDoctor.specialization.value || sanitizedDoctor.specialization
       };
     });
 
